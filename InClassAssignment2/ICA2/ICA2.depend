@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1538077798 source:c:\users\arvin\desktop\cs hw\inclassassignment2\ica2\ica2.cpp
+	<fstream>
+	<iostream>
+

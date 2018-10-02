@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1537295235 source:c:\users\arvin\desktop\cs hw\avengers4reservationsystem\avengers4reservation\avengers4resevationsystemarvindsundar.cpp
+	<iostream>
+	<fstream>
+	<iomanip>
+	<cctype>
+	<string>
+	<cmath>
+
