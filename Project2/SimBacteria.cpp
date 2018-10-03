@@ -80,6 +80,9 @@ int main() {
     //rewrite the file
     rewriteFile(bacAry, simFile, row, col);
 
+    //free the allocated space
+    delete [] bacAry;
+    delete [] lifeAry;
     return 0;
 }
 
