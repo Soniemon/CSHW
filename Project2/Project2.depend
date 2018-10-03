@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1538525531 source:c:\users\arvind\desktop\cshw\project2\simbacteria.cpp
+	<fstream>
+	<iostream>
+	<cctype>
+
