@@ -184,6 +184,36 @@ void runGenerations(int** ary, int** mod, int gens, int rows, int cols) {
 }
 
 void popMod(int** ary, int** mod, int rows, int cols) {
+    //holds the position of the beginning of the 2d array
+    int** anchor = ary;
+    //holds pointers for the surrounding area
+    int **above, **around, **below;
+    //holds how many surrounding entities are alive
+    int surLife;
+    //loop through the surrounding area of the pointer
+    //make the main pointer loop through each row
+    for(int i = 0; i < rows; i++) {
+        //main pointer loops thru each column
+        for(int j = 0; j < cols; j++){
+            surLife=0;
+            //set above pointer to up diagonal left of main
+            above = ary-1;
+            *above = *ary-1;
+            //set around to left of main pointer
+            *around = *ary-1;
+            //set below pointer to down diagonal left of main
+            below = ary+1;
+            *below = *ary-1;
+            //move above pointer 3 times
+            for(int k = 0; k < 3; k++){
+                if(!((above-anchor)<0)){
+                    if(*above-*ary)
+
+                }
+            }
+
+        }
+    }
 
 
 }
