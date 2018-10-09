@@ -176,6 +176,7 @@ bool intVerify(string input) {
 void runGenerations(int** ary, int** mod, int gens, int rows, int cols) {
     //loop generation process the amount of times user input.
     for(int i = 0; i < gens; i++) {
+        cout<<"hi"<<endl;
         //populate the modification array
         popMod(ary, mod, rows, cols);
         //advance generation by 1
@@ -186,6 +187,8 @@ void runGenerations(int** ary, int** mod, int gens, int rows, int cols) {
 void popMod(int** ary, int** mod, int rows, int cols) {
     //holds the position of the beginning of the 2d array
     int** anchor = ary;
+    //holds the beginning value for each row when parsing cols
+    int *aboveAnchor, *belowAnchor;
     //holds pointers for the surrounding area
     int **above, **around, **below;
     //holds how many surrounding entities are alive
@@ -193,29 +196,108 @@ void popMod(int** ary, int** mod, int rows, int cols) {
     //loop through the surrounding area of the pointer
     //make the main pointer loop through each row
     for(int i = 0; i < rows; i++) {
+        //setting column anchor only if it is in array
+        if(i != 0 ) {
+            aboveAnchor = *(ary-1);
+        } else {
+            aboveAnchor = nullptr;
+        }
+        if((ary-anchor) < (rows-1)){
+            belowAnchor = *(ary+1);
+        } else {
+            belowAnchor = nullptr;
+        }
         //main pointer loops thru each column
         for(int j = 0; j < cols; j++){
             surLife=0;
             //set above pointer to up diagonal left of main
-            above = ary-1;
-            *above = *ary-1;
-            //set around to left of main pointer
-            *around = *ary-1;
-            //set below pointer to down diagonal left of main
-            below = ary+1;
-            *below = *ary-1;
-            //move above pointer 3 times
-            for(int k = 0; k < 3; k++){
-                if(!((above-anchor)<0)){
-                    if(*above-*ary)
-
+            if (aboveAnchor != nullptr) {
+                above = ary-1;
+                if (j!=0) {
+                    *above += (j-1);
+                } else {
+                    *above += j;
                 }
             }
+            //set around to left of main pointer
+            around = ary;
+            if (j!=0) {
+                *around += (j-1);
+            } else {
+                *around += j;
+            }
+            //set below pointer to down diagonal left of main
+            if (belowAnchor != nullptr){
+                below = ary+1;
+                if (j!=0) {
+                    *below += (j-1);
+                } else {
+                    *below += j;
+                }
+            }
+            //move above pointer 3 times
+            for(int k = 0; k < 3; k++){
+                if((aboveAnchor == nullptr) || ((j>=(cols-1)) && (k == 2))){
+                    break;
+                }
+                if((j==0)&&(k==0)){
+                    continue;
+                }
+                if(**above==1){
+                    surLife++;
+                }
+                ++*above;
+            }
+            //move same line pointer around target
+            for(int k = 0; k < 3; k++){
+                if((j>=(cols-1)) && (k == 2)){
+                    break;
+                }
+                if(((j==0)&&(k==0)) || (k==1)){
+                    continue;
+                }
+                    if(**around==1){
+                        surLife++;
+                    }
+                ++*around;
+            }
 
+            //move below pointer 3 times
+            for(int k = 0; k < 3; k++){
+                if((belowAnchor == nullptr) || ((j>=(cols-1)) && (k == 2))){
+                    break;
+                }
+                if((j==0)&&(k==0)){
+                    continue;
+                }
+                if(**below==1){
+                    surLife++;
+                }
+                ++*below;
+            }
+
+            if (surLife < 2 || surLife > 3) {
+                **mod = 0;
+                cout << "0 ";
+            }
+            if (surLife == 3) {
+                **mod = 1;
+                cout<<"1 ";
+            }
+            if (surLife == 2) {
+                **mod = **ary;
+                cout<<**ary<<" ";
+            }
+
+            ++*ary;
+            ++*mod;
         }
+        cout <<endl;
+        *ary-=cols;
+        *mod-=cols;
+        ++ary;
+        ++mod;
     }
-
-
 }
 
 void nextGen(int** ary, int** mod, int rows, int cols) {
@@ -235,7 +317,7 @@ void nextGen(int** ary, int** mod, int rows, int cols) {
 
 void rewriteFile(int** ary, fstream& simFile, int rows, int cols) {
     //open the file with out and truncate tags
-    simFile.open("simbac.txt", ios::out | ios::trunc);
+    simFile.open("simbac2.txt", ios::out | ios::trunc);
 
     //parse through entire array
     //if 0 ' ' if 1 '*'
@@ -252,6 +334,7 @@ void rewriteFile(int** ary, fstream& simFile, int rows, int cols) {
         *ary-=cols;
         ++ary;
     }
+    ary-=rows;
     //write to file
     for (int i = 0; i < rows; i++){
         for (int j = 0; j < cols; j++){
